@@ -55,7 +55,7 @@ function word_censorship_options() {
 			});
 
 
-			$("#bad_word").on('click',function(event) {
+			$("#result #bad_word").on('click',function(event) {
 				event.preventDefault();
 
 				let word = $(this).val();
@@ -94,8 +94,8 @@ function word_censorship_options() {
 					success: function(response){
 						$("#add_bad_words").val('');
 						let message = "<p><h3 style=\"color:green\">Settings saved successfully</h3></p>";
-						addToList(response);
 						alertPostAction(message);
+						addToList(response);
 					},
 						timeout: 5000,
 				});
