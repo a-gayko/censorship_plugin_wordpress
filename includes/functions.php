@@ -7,16 +7,10 @@ function add_link_to_dashboard()
  add_menu_page('Censorship', 'Censorship', 'manage_options', 'word-censorship', 'word_censorship_options', 'dashicons-admin-plugins', 65); 
 }
 
-
-add_action('admin_menu', 'word_censorship_admin_menu');
-function word_censorship_admin_menu() {
-	add_options_page( 'Censorship', 'Censorship', 'manage_options', 'word-censorship', 'word_censorship_options' );
-}
-
-
 function word_censorship_options() {
 ?>
 
+<div class="wrapper">
 	<div>
 		<form id="form">
 			<h3>Write words in lowercase, separated by commas</h3>
@@ -38,6 +32,9 @@ function word_censorship_options() {
 	</div>
 
 	<div id="save_result"></div>
+</div>
+
+
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript">
