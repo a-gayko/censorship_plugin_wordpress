@@ -57,6 +57,7 @@ function word_censorship_load_plugin_textdamain()
 
 
 $word_censorship = new word_censorship();
+
 add_filter('pre_comment_content','word_censorship_filter_comment');
 
 function word_censorship_filter_comment($comment_text) {

@@ -50,8 +50,14 @@ function word_censorship_options() {
 				$(".submit_bad_words").trigger("reset");
 
 				const bad_words = $('#add_bad_words').val();
-				
-				submitBadWordsFromAjax(ajaxurl, bad_words);
+				if(bad_words.trim() !== "") {
+					submitBadWordsFromAjax(ajaxurl, bad_words);
+				} else {
+					let message = "<p><h3 style=\"color:red\">The field must be not empty</h3></p>";
+					alertPostAction(message);
+					$("#add_bad_words").val('');
+					hideMessage();
+				}
 			});
 
 
@@ -63,8 +69,7 @@ function word_censorship_options() {
 				deleted_word = word.substring(0, length_word);
 
 				deleteBadWordFromAjax(ajaxurl, deleted_word);
-				$("#bad_word").trigger("reset");
-				$('#bad_word').remove();
+				$(this).remove();
 			});
 
 			function addToList(response) {
@@ -89,13 +94,13 @@ function word_censorship_options() {
 					url: ajaxurl,
 					data: {
 						action: 'submit_bad_words_action',
-						bad_words: value
+						bad_words: value.trim()
 					},
 					success: function(response){
-						$("#add_bad_words").val('');
 						let message = "<p><h3 style=\"color:green\">Settings saved successfully</h3></p>";
-						alertPostAction(message);
 						addToList(response);
+						alertPostAction(message);
+						$("#add_bad_words").val('');
 					},
 						timeout: 5000,
 				});
@@ -133,7 +138,7 @@ function add_bad_words() {
 
 	if(!empty($_POST) && $_POST['bad_words'] !== '') {
 
-        $bad_words = explode(',', $_POST['bad_words']);
+        $bad_words = explode(',', htmlspecialchars($_POST['bad_words']));
 
 		global $wpdb;
 
@@ -143,9 +148,10 @@ function add_bad_words() {
 
 			$wpdb->insert($table_name, ['word' => trim($word)]);
 		}   
-	echo json_encode($bad_words);
 
-	exit();
+		echo json_encode($bad_words);	
+
+		exit();
 	}
 }
 
@@ -170,8 +176,6 @@ function delete_bad_word() {
 	exit();
 	}
 }
-
-/////////////////
 
 function get_bad_words() {
 
